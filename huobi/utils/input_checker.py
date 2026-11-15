@@ -9,7 +9,9 @@ reg_ex = "[ _`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}
 def check_symbol(symbol):
     if not isinstance(symbol, str):
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] symbol must be string")
-    if re.match(reg_ex, symbol):
+    if not symbol or len(symbol) == 0:
+        raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] symbol should not be empty")
+    if re.search(reg_ex, symbol):
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] " + symbol + "  is invalid symbol")
 
 
@@ -17,7 +19,8 @@ def check_time_in_force(time_in_force, order_type):
     if time_in_force is None:
         return
 
-    if order_type in [OrderType.BUY_MARKET, OrderType.SELL_MARKET] \
+    market_types = [OrderType.BUY_MARKET, OrderType.SELL_MARKET, AlgoOrderType.MARKET]
+    if order_type in market_types \
             and time_in_force in [TimeInForceType.GTC, TimeInForceType.BOC, TimeInForceType.FOK]:
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] timeInForce not supported for market order")
 
@@ -25,6 +28,8 @@ def check_time_in_force(time_in_force, order_type):
 def check_symbol_list(symbols):
     if not isinstance(symbols, list):
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] symbols in subscription is not a list")
+    if len(symbols) == 0:
+        raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] symbols list should not be empty")
     for symbol in symbols:
         check_symbol(symbol)
 
@@ -32,7 +37,9 @@ def check_symbol_list(symbols):
 def check_currency(currency):
     if not isinstance(currency, str):
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] currency must be string")
-    if re.match(reg_ex, currency) is not None:
+    if not currency or len(currency) == 0:
+        raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] currency should not be empty")
+    if re.search(reg_ex, currency) is not None:
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] " + currency + "  is invalid currency")
 
 
@@ -58,12 +65,14 @@ def check_should_none(value, name):
 def check_in_list(value, list_configed, name):
     if (value is not None) and (value not in list_configed):
         raise HuobiApiException(HuobiApiException.INPUT_ERROR,
-                                "[Input] " + name + " should be one in " + (",".join(list_configed)))
+                                "[Input] " + name + " should be one in " + (",".join(str(x) for x in list_configed)))
 
 
 def check_list(list_value, min_value, max_value, name):
     if list_value is None:
         return
+    if not isinstance(list_value, (list, tuple)):
+        raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] " + name + " must be a list")
     if len(list_value) > max_value:
         raise HuobiApiException(HuobiApiException.INPUT_ERROR,
                                 "[Input] " + name + " is out of bound, the max size is " + str(max_value))
@@ -75,7 +84,18 @@ def check_list(list_value, min_value, max_value, name):
 def greater_or_equal(value, base, name):
     if value is not None and value < base:
         raise HuobiApiException(HuobiApiException.INPUT_ERROR,
-                                "[Input] " + name + " should be greater than " + base)
+                                "[Input] " + name + " should be greater than or equal to " + str(base))
+
+
+def check_should_be_positive(value, name):
+    if value is not None and value <= 0:
+        raise HuobiApiException(HuobiApiException.INPUT_ERROR,
+                                "[Input] " + name + " should be positive")
+
+
+def check_should_not_empty(value, name):
+    if value is None or (isinstance(value, (str, list, dict)) and len(value) == 0):
+        raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] " + name + " should not be empty")
 
 
 def format_date(value, name):
@@ -86,5 +106,5 @@ def format_date(value, name):
     try:
         new_time = time.strptime(value, "%Y-%m-%d")
         return time.strftime("%Y-%m-%d", new_time)
-    except:
+    except ValueError:
         raise HuobiApiException(HuobiApiException.INPUT_ERROR, "[Input] " + name + " is not invalid date format")

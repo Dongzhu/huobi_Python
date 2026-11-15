@@ -99,7 +99,7 @@ class WithdrawState:
     REJECT = "reject"
     PRETRANSFER = "pre-transfer"
     WALLETTRANSFER = "wallet-transfer"
-    WALEETREJECT = "wallet-reject"
+    WALLETREJECT = "wallet-reject"
     CONFIRMED = "confirmed"
     CONFIRMERROR = "confirm-error"
     REPEALED = "repealed"
@@ -196,16 +196,18 @@ class EtfSwapType:
 
 
 class AccountChangeType:
-    NEWORDER = "order.place"
-    TRADE = "order.match"
-    REFUND = "order.refund"
-    CANCELORDER = "order.cancel"
-    FEE = "order.fee-refund"
-    TRANSFER = "margin.transfer"
-    LOAN = "margin.loan"
-    INTEREST = "margin.interest"
-    REPAY = "margin.repay"
+    ORDER_PLACE = "order-place"
+    ORDER_MATCH = "order-match"
+    ORDER_REFUND = "order-refund"
+    ORDER_CANCEL = "order-cancel"
+    ORDER_FEE_REFUND = "order-fee-refund"
+    MARGIN_TRANSFER = "margin-transfer"
+    MARGIN_LOAN = "margin-loan"
+    MARGIN_INTEREST = "margin-interest"
+    MARGIN_REPAY = "margin-repay"
     OTHER = "other"
+    DEPOSIT = "deposit"
+    WITHDRAW = "withdraw"
     INVALID = None
 
 
@@ -280,22 +282,6 @@ class ChainWithdrawStatus:
 class InstrumentStatus:
     NORMAL = "normal"
     DELISTED = "delisted"
-    INVALID = None
-
-
-class AccountChangeType:
-    ORDER_PLACE = "order-place"
-    ORDER_MATCH = "order-match"
-    ORDER_REFUND = "order-refund"
-    ORDER_CANCEL = "order-cancel"
-    ORDER_FEE_REFUND = "order-fee-refund"
-    MARGIN_TRANSFER = "margin-transfer"
-    MARGIN_LOAN = "margin-loan"
-    MARGIN_INTEREST = "margin-interest"
-    MARGIN_REPAY = "margin-repay"
-    OTHER = "other"
-    DEPOSIT = "deposit"
-    WITHDRAW = "withdraw"
     INVALID = None
 
 

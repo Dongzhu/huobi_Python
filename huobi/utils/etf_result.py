@@ -1,5 +1,10 @@
 def etf_result_check(code):
-    code = int(code)
+    if code is None:
+        return ""
+    try:
+        code = int(code)
+    except (ValueError, TypeError):
+        return ""
     if code == 200:
         return ""
     elif code == 10400:

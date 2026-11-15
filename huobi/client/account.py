@@ -229,20 +229,6 @@ class AccountClient(object):
         from huobi.service.account.post_futures_and_pro_transfer import PostTransferBetweenFuturesAndProService
         return PostTransferBetweenFuturesAndProService(params).request(**self.__kwargs)
 
-    def get_account_balance_by_subuid(self, sub_uid):
-        """
-        Get account balance of a sub-account.
-
-        :param sub_uid: the specified sub account id to get balance for.
-        :return: the balance of a sub-account specified by sub-account uid.
-        """
-        check_should_not_none(sub_uid, "sub-uid")
-        params = {
-            "sub-uid": sub_uid
-        }
-        from huobi.service.account.get_account_balance_by_subuid import GetAccountBalanceBySubUidService
-        return GetAccountBalanceBySubUidService(params).request(**self.__kwargs)
-
     def get_account_history(self, account_id: 'int', currency: 'str' = None,
                             transact_types: 'str' = None, start_time: 'int' = None, end_time: 'int' = None,
                             sort: 'str' = None, size: 'int' = None):
@@ -347,7 +333,7 @@ class AccountClient(object):
 
         params = {
             "accountType": account_type,
-            "valuationCurrency": valuation_currency.upper(),
+            "valuationCurrency": valuation_currency.upper() if valuation_currency else None,
             "subUid": sub_uid
         }
         from huobi.service.account.get_account_asset_valuation import GetAccountAssetValuationService

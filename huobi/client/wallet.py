@@ -53,7 +53,7 @@ class WalletClient(object):
         :param chain: set as "usdt" to withdraw USDT to OMNI, set as "trc20usdt" to withdraw USDT to TRX. (optional)
         :return: Withdraw id
         """
-        check_symbol(currency)
+        check_currency(currency)
         check_should_not_none(address, "address")
         check_should_not_none(amount, "amount")
         check_should_not_none(fee, "fee")

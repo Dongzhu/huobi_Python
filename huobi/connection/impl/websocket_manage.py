@@ -96,7 +96,7 @@ class WebsocketManage:
             self.original_connection.close()
             self.original_connection = None
             self.state = ConnectionState.WAIT_RECONNECT
-            self.reconnect_at =  + delay_in_ms
+            self.reconnect_at = get_current_timestamp() + delay_in_ms
         self.logger.warning("[Sub][%d] Lost connectiong for %d ms, will try reconnecting " % (self.id, self.reconnect_at))
 
     def re_connect(self):

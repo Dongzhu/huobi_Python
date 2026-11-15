@@ -57,4 +57,4 @@ def create_signature_v2(api_key, secret_key, method, url, builder):
     """
 
 def utc_now():
-    return datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S')
+    return datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S')

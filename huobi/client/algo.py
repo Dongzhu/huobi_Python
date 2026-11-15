@@ -98,16 +98,13 @@ class AlgoClient(object):
         check_should_not_none(order_type, "orderType")
         check_should_not_none(order_side, "orderSide")
 
-        if order_type == OrderType.SELL_LIMIT \
-                or order_type == OrderType.BUY_LIMIT \
-                or order_type == OrderType.BUY_LIMIT_MAKER \
-                or order_type == OrderType.SELL_LIMIT_MAKER:
+        if order_type == AlgoOrderType.LIMIT:
             check_should_not_none(order_price, "orderPrice")
 
         if time_in_force is not None:
-            check_time_in_force(time_in_force)
+            check_time_in_force(time_in_force, order_type)
 
-        if order_type in [OrderType.SELL_MARKET, OrderType.BUY_MARKET]:
+        if order_type == AlgoOrderType.MARKET:
             order_price = None
 
         params = {

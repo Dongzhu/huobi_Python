@@ -142,12 +142,12 @@ class MarketClient(object):
                 DepthStep.STEP5]
 
     @staticmethod
-    def get_valid_depth_step(value, defalut_value):
+    def get_valid_depth_step(value, default_value):
         step_list = MarketClient.get_depth_step_list()
         if value in step_list:
             return value
         else:
-            return defalut_value
+            return default_value
 
     def sub_pricedepth(self, symbols: 'str', depth_step: 'str', callback, error_handler=None):
         """
@@ -166,7 +166,7 @@ class MarketClient(object):
         """
         symbol_list = symbols.split(",")
         check_symbol_list(symbol_list)
-        new_step = MarketClient.get_valid_depth_step(value=depth_step, defalut_value=DepthStep.STEP0)
+        new_step = MarketClient.get_valid_depth_step(value=depth_step, default_value=DepthStep.STEP0)
         check_should_not_none(callback, "callback")
 
         params = {
@@ -219,7 +219,7 @@ class MarketClient(object):
         """
         symbol_list = symbols.split(",")
         check_symbol_list(symbol_list)
-        new_step = MarketClient.get_valid_depth_step(value=depth_step, defalut_value=DepthStep.STEP0)
+        new_step = MarketClient.get_valid_depth_step(value=depth_step, default_value=DepthStep.STEP0)
         check_should_not_none(callback, "callback")
 
         params = {

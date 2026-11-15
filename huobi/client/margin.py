@@ -156,7 +156,8 @@ class MarginClient(object):
         :return: The cross margin loan info.
         """
 
-        check_symbol(symbols)
+        if symbols is not None:
+            check_symbol(symbols)
         params = {
             "symbols": symbols
         }
@@ -339,7 +340,7 @@ class MarginClient(object):
         if account_id is not None:
             params['accountId'] = account_id
 
-        if account_id is not None:
+        if currency is not None:
             params['currency'] = currency
 
         if start_time is not None:

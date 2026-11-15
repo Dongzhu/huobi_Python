@@ -9,6 +9,8 @@ from huobi.utils.print_mix_object import TypeCheck
 session = requests.Session()
 
 def check_response(dict_data):
+    if dict_data is None:
+        raise HuobiApiException(HuobiApiException.RUNTIME_ERROR, "[Invoking] Response is None")
     status = dict_data.get("status", None)
     code = dict_data.get("code", None)
     success = dict_data.get("success", None)
@@ -53,14 +55,14 @@ def call_sync(request, is_checked=False):
         response = session.get(request.host + request.url, headers=request.header)
         if is_checked is True:
             return response.text
-        dict_data = json.loads(response.text, encoding="utf-8")
+        dict_data = json.loads(response.text)
         # print("call_sync  === recv data : ", dict_data)
         check_response(dict_data)
         return request.json_parser(dict_data)
 
     elif request.method == "POST":
         response = session.post(request.host + request.url, data=json.dumps(request.post_body), headers=request.header)
-        dict_data = json.loads(response.text, encoding="utf-8")
+        dict_data = json.loads(response.text)
         # print("call_sync  === recv data : ", dict_data)
         check_response(dict_data)
         return request.json_parser(dict_data)
@@ -76,7 +78,7 @@ def call_sync_perforence_test(request, is_checked=False):
         req_cost = response.elapsed.total_seconds()
         if is_checked is True:
             return response.text
-        dict_data = json.loads(response.text, encoding="utf-8")
+        dict_data = json.loads(response.text)
         # print("call_sync  === recv data : ", dict_data)
         check_response(dict_data)
         return request.json_parser(dict_data), req_cost, cost_manual
@@ -87,7 +89,7 @@ def call_sync_perforence_test(request, is_checked=False):
         inner_end_time = time.time()
         cost_manual = round(inner_end_time - inner_start_time, 6)
         req_cost = response.elapsed.total_seconds()
-        dict_data = json.loads(response.text, encoding="utf-8")
+        dict_data = json.loads(response.text)
         # print("call_sync  === recv data : ", dict_data)
         check_response(dict_data)
         return request.json_parser(dict_data), req_cost, cost_manual

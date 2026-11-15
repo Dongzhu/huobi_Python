@@ -500,7 +500,7 @@ class TradeClient(object):
                 item.get("price", None),
                 item.get("source", None),
                 item.get("client_order_id", None),
-                item.get("stop-price", None),
+                item.get("stop_price", None),
                 item.get("operator", None))
 
             new_config_list.append(new_item)
